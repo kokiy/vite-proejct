@@ -1,28 +1,58 @@
-import js from '@eslint/js'
+import pluginJs from '@eslint/js'
+import vitest from '@vitest/eslint-plugin'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import pluginReact from 'eslint-plugin-react'
+import pluginReactHooks from 'eslint-plugin-react-hooks'
+import pluginPromise from 'eslint-plugin-promise'
 import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+// eslint-disable-next-line import/no-unresolved
 import tseslint from 'typescript-eslint'
+import pluginImport from 'eslint-plugin-import';
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+
+export default [
+  { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginPromise.configs['flat/recommended'],
+  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat['jsx-runtime'],
+  pluginImport.flatConfigs.recommended,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
+    files: ['src/**/*.{ts,tsx}'],
+    plugins: { 'react-hooks': pluginReactHooks },
+    rules: { 'react-hooks/rules-of-hooks': 'error', 'react-hooks/exhaustive-deps': 'warn' },
+  },
+  {
+    ignores: ['dist/', 'public/', 'history/'],
+  },
+  {
+    files: ['**/*.test.{tsx,ts}'],
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      vitest,
     },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+    rules: vitest.configs.recommended.rules,
+  },
+  {
+    ...jsxA11y.flatConfigs.recommended,
+    plugins: { 'jsx-a11y': jsxA11y },
+    languageOptions: {
+      ...jsxA11y.flatConfigs.recommended.languageOptions,
+      globals: { ...globals.serviceworker, ...globals.browser },
     },
   },
-)
+  {
+    settings: {
+      react: { version: 'detect' },
+    },
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
+      'prefer-const': 'error',
+      eqeqeq: 'error',
+      'no-duplicate-imports': 'error',
+      'react/prop-types': 0,
+      'react/forbid-dom-props': ['error', { forbid: ['style'] }],
+    },
+  },
+]
