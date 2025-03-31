@@ -1,3 +1,4 @@
 node_modules
 dist
 mocks/mockServiceWorker.js
+package-lock.json

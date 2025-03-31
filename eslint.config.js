@@ -4,6 +4,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginReact from 'eslint-plugin-react'
 import pluginReactHooks from 'eslint-plugin-react-hooks'
 import pluginPromise from 'eslint-plugin-promise'
+import pluginReactRefresh from "eslint-plugin-react-refresh";
 import globals from 'globals'
 // eslint-disable-next-line import/no-unresolved
 import tseslint from 'typescript-eslint'
@@ -14,6 +15,7 @@ export default [
   { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,
+  pluginReactRefresh.configs.recommended,
   ...tseslint.configs.recommended,
   pluginPromise.configs['flat/recommended'],
   pluginReact.configs.flat.recommended,

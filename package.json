@@ -4,10 +4,29 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "dev": "vite",
+    "eslint": "eslint --fix --max-warnings=0 --no-warn-ignored",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "stylelint": "stylelint --fix src/**/*.css"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "npm run eslint",
+      "prettier --cache --write"
+    ],
+    "*.{ts,tsx}": [
+      "npm run eslint",
+      "prettier --cache --parser=typescript --write"
+    ],
+    "*.{css,less}": [
+      "npm run stylelint",
+      "prettier --cache --write"
+    ],
+    "*.{md,json}": [
+      "prettier --cache --write"
+    ]
   },
   "dependencies": {
     "lodash": "^4.17.21",
@@ -36,6 +55,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.15.0",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.5.1",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-packagejson": "^2.5.8",
@@ -44,8 +64,10 @@
     "stylelint-config-recess-order": "^6.0.0",
     "stylelint-config-standard": "^37.0.0",
     "stylelint-less": "^3.0.1",
+    "stylelint-order": "^6.0.4",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.1.0"
+    "vite": "^6.1.1",
+    "vite-plugin-checker": "^0.8.0"
   }
 }
